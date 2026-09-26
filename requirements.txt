@@ -1,0 +1,7 @@
+# --- Runtime (Day 1) ---
+sentence-transformers>=2.2.0   # all-MiniLM-L6-v2 embeddings (pulls in torch, transformers)
+networkx>=3.0                  # semantic graph, centrality, graph metrics
+numpy>=1.24                    # imported directly by embedder and builder
+
+# --- Testing ---
+pytest>=7.0                    # pytest.ini uses the 'pythonpath' option (needs 7.0+)
