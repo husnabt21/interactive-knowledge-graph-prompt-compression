@@ -5,3 +5,10 @@ numpy>=1.24                    # imported directly by embedder and builder
 
 # --- Testing ---
 pytest>=7.0                    # pytest.ini uses the 'pythonpath' option (needs 7.0+)
+
+# --- Runtime (Day 3) ---
+plotly>=5.18                   # interactive graph figure
+streamlit>=1.35                # UI; on_select for click-to-select needs 1.35+
+
+# --- Testing ---
+pytest>=7.0

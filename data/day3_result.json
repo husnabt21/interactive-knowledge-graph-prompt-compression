@@ -1,0 +1,432 @@
+{
+  "graph": {
+    "model_name": "all-MiniLM-L6-v2",
+    "relationship_type": "semantic_similarity",
+    "similarity_threshold": 0.3,
+    "near_duplicate_threshold": 0.9,
+    "near_duplicate_pairs": [],
+    "warnings": []
+  },
+  "nodes": [
+    {
+      "node_id": "N01",
+      "text": "You are a senior financial analyst at a retail bank.",
+      "type": "role",
+      "confidence": 1.0,
+      "kind": "sentence",
+      "index": 0,
+      "line_start": 1,
+      "parent_heading": null,
+      "importance": 0.4469837525223952,
+      "connectivity": 0.6679350100895808,
+      "centrality": 0.0,
+      "protection": 0.0
+    },
+    {
+      "node_id": "N02",
+      "text": "Task: Summarize the quarterly credit-risk report for the executive team.",
+      "type": "instruction",
+      "confidence": 1.0,
+      "kind": "sentence",
+      "index": 1,
+      "line_start": 3,
+      "parent_heading": null,
+      "importance": 0.725,
+      "connectivity": 1.0,
+      "centrality": 0.5,
+      "protection": 0.0
+    },
+    {
+      "node_id": "N03",
+      "text": "The report covers Q3 loan performance across personal, auto and mortgage portfolios.",
+      "type": "context",
+      "confidence": 1.0,
+      "kind": "sentence",
+      "index": 2,
+      "line_start": 6,
+      "parent_heading": "Context",
+      "importance": 0.5115770615412955,
+      "connectivity": 0.9463082461651817,
+      "centrality": 0.5,
+      "protection": 0.0
+    },
+    {
+      "node_id": "N04",
+      "text": "Default rates rose in the auto portfolio.",
+      "type": "context",
+      "confidence": 1.0,
+      "kind": "sentence",
+      "index": 3,
+      "line_start": 6,
+      "parent_heading": "Context",
+      "importance": 0.3407163317600465,
+      "connectivity": 0.562865327040186,
+      "centrality": 0.0,
+      "protection": 0.0
+    },
+    {
+      "node_id": "N05",
+      "text": "Do not exceed 200 words.",
+      "type": "constraint",
+      "confidence": 1.0,
+      "kind": "list_item",
+      "index": 4,
+      "line_start": 9,
+      "parent_heading": "Constraints",
+      "importance": 0.8616120769204317,
+      "connectivity": 0.6064483076817269,
+      "centrality": 1.0,
+      "protection": 1.0
+    },
+    {
+      "node_id": "N06",
+      "text": "Avoid technical jargon.",
+      "type": "constraint",
+      "confidence": 1.0,
+      "kind": "list_item",
+      "index": 5,
+      "line_start": 10,
+      "parent_heading": "Constraints",
+      "importance": 0.6332256552861277,
+      "connectivity": 0.2929026211445109,
+      "centrality": 0.0,
+      "protection": 1.0
+    },
+    {
+      "node_id": "N07",
+      "text": "Include the three biggest risk drivers.",
+      "type": "requirement",
+      "confidence": 1.0,
+      "kind": "list_item",
+      "index": 6,
+      "line_start": 13,
+      "parent_heading": "Requirements",
+      "importance": 0.7100809463529556,
+      "connectivity": 0.600323785411822,
+      "centrality": 0.0,
+      "protection": 1.0
+    },
+    {
+      "node_id": "N08",
+      "text": "Example: \"Auto defaults rose 0.4 points, driven by used-car price declines.\"",
+      "type": "example",
+      "confidence": 1.0,
+      "kind": "sentence",
+      "index": 7,
+      "line_start": 15,
+      "parent_heading": null,
+      "importance": 0.3407163317600465,
+      "connectivity": 0.562865327040186,
+      "centrality": 0.0,
+      "protection": 0.0
+    },
+    {
+      "node_id": "N09",
+      "text": "Respond in bullet points followed by a one-line recommendation.",
+      "type": "output_format",
+      "confidence": 0.75,
+      "kind": "sentence",
+      "index": 8,
+      "line_start": 18,
+      "parent_heading": "Output format",
+      "importance": 0.618386421634304,
+      "connectivity": 0.31354568653721604,
+      "centrality": 0.0,
+      "protection": 1.0
+    }
+  ],
+  "edges": [
+    {
+      "source": "N01",
+      "target": "N02",
+      "weight": 0.3855988383293152,
+      "relationship": "semantic_similarity",
+      "near_duplicate": false
+    },
+    {
+      "source": "N01",
+      "target": "N03",
+      "weight": 0.3414645195007324,
+      "relationship": "semantic_similarity",
+      "near_duplicate": false
+    },
+    {
+      "source": "N02",
+      "target": "N03",
+      "weight": 0.36903658509254456,
+      "relationship": "semantic_similarity",
+      "near_duplicate": false
+    },
+    {
+      "source": "N02",
+      "target": "N07",
+      "weight": 0.3338886797428131,
+      "relationship": "semantic_similarity",
+      "near_duplicate": false
+    },
+    {
+      "source": "N03",
+      "target": "N07",
+      "weight": 0.31957823038101196,
+      "relationship": "semantic_similarity",
+      "near_duplicate": false
+    },
+    {
+      "source": "N04",
+      "target": "N08",
+      "weight": 0.6126924753189087,
+      "relationship": "semantic_similarity",
+      "near_duplicate": false
+    },
+    {
+      "source": "N05",
+      "target": "N06",
+      "weight": 0.31883156299591064,
+      "relationship": "semantic_similarity",
+      "near_duplicate": false
+    },
+    {
+      "source": "N05",
+      "target": "N09",
+      "weight": 0.3413020372390747,
+      "relationship": "semantic_similarity",
+      "near_duplicate": false
+    }
+  ],
+  "compression": {
+    "original_prompt": "You are a senior financial analyst at a retail bank.\n\nTask: Summarize the quarterly credit-risk report for the executive team.\n\nContext:\nThe report covers Q3 loan performance across personal, auto and mortgage portfolios. Default rates rose in the auto portfolio.\n\nConstraints:\n- Do not exceed 200 words.\n- Avoid technical jargon.\n\nRequirements:\n- Include the three biggest risk drivers.\n\nExample: \"Auto defaults rose 0.4 points, driven by used-car price declines.\"\n\nOutput format:\nRespond in bullet points followed by a one-line recommendation.",
+    "compressed_prompt": "You are a senior financial analyst at a retail bank.\n\nTask: Summarize the quarterly credit-risk report for the executive team.\n\nThe report covers Q3 loan performance across personal, auto and mortgage portfolios.\n\n- Do not exceed 200 words.\n- Avoid technical jargon.\n- Include the three biggest risk drivers.\n\nRespond in bullet points followed by a one-line recommendation.",
+    "requested_retention_ratio": 0.7,
+    "actual_retention_ratio": 0.7777777777777778,
+    "target_node_count": 7,
+    "original_node_count": 9,
+    "retained_node_count": 7,
+    "removed_node_count": 2,
+    "retained_node_ids": [
+      "N01",
+      "N02",
+      "N03",
+      "N05",
+      "N06",
+      "N07",
+      "N09"
+    ],
+    "removed_node_ids": [
+      "N04",
+      "N08"
+    ],
+    "decisions": [
+      {
+        "node_id": "N01",
+        "index": 0,
+        "decision": "RETAIN",
+        "unit_type": "role",
+        "kind": "sentence",
+        "text": "You are a senior financial analyst at a retail bank.",
+        "importance": 0.4469837525223952,
+        "priority": 0.4469837525223952,
+        "protected": false,
+        "redundancy": 0.3855988383293152,
+        "reason_codes": [
+          "WITHIN_RETENTION_TARGET"
+        ],
+        "reason": "Retained because its adjusted priority 0.408 ranked 7 of 9 surviving units, within the retention target of 7.",
+        "duplicate_of": null,
+        "duplicate_similarity": null
+      },
+      {
+        "node_id": "N02",
+        "index": 1,
+        "decision": "RETAIN",
+        "unit_type": "instruction",
+        "kind": "sentence",
+        "text": "Task: Summarize the quarterly credit-risk report for the executive team.",
+        "importance": 0.725,
+        "priority": 1.725,
+        "protected": true,
+        "redundancy": 0.3855988383293152,
+        "reason_codes": [
+          "PROTECTED_TYPE"
+        ],
+        "reason": "Retained because it is a protected instruction unit (locked from retention-target removal).",
+        "duplicate_of": null,
+        "duplicate_similarity": null
+      },
+      {
+        "node_id": "N03",
+        "index": 2,
+        "decision": "RETAIN",
+        "unit_type": "context",
+        "kind": "sentence",
+        "text": "The report covers Q3 loan performance across personal, auto and mortgage portfolios.",
+        "importance": 0.5115770615412955,
+        "priority": 0.5115770615412955,
+        "protected": false,
+        "redundancy": 0.36903658509254456,
+        "reason_codes": [
+          "WITHIN_RETENTION_TARGET"
+        ],
+        "reason": "Retained because its adjusted priority 0.475 ranked 6 of 9 surviving units, within the retention target of 7.",
+        "duplicate_of": null,
+        "duplicate_similarity": null
+      },
+      {
+        "node_id": "N04",
+        "index": 3,
+        "decision": "REMOVE",
+        "unit_type": "context",
+        "kind": "sentence",
+        "text": "Default rates rose in the auto portfolio.",
+        "importance": 0.3407163317600465,
+        "priority": 0.3407163317600465,
+        "protected": false,
+        "redundancy": 0.6126924753189087,
+        "reason_codes": [
+          "BELOW_RETENTION_TARGET"
+        ],
+        "reason": "Removed because its adjusted priority 0.279 (importance 0.341, redundancy 0.613) was among the lowest of the removable units and the retention target (7 of 9 units) required removing 2.",
+        "duplicate_of": null,
+        "duplicate_similarity": null
+      },
+      {
+        "node_id": "N05",
+        "index": 4,
+        "decision": "RETAIN",
+        "unit_type": "constraint",
+        "kind": "list_item",
+        "text": "Do not exceed 200 words.",
+        "importance": 0.8616120769204317,
+        "priority": 1.8616120769204318,
+        "protected": true,
+        "redundancy": 0.3413020372390747,
+        "reason_codes": [
+          "PROTECTED_TYPE"
+        ],
+        "reason": "Retained because it is a protected constraint unit (locked from retention-target removal).",
+        "duplicate_of": null,
+        "duplicate_similarity": null
+      },
+      {
+        "node_id": "N06",
+        "index": 5,
+        "decision": "RETAIN",
+        "unit_type": "constraint",
+        "kind": "list_item",
+        "text": "Avoid technical jargon.",
+        "importance": 0.6332256552861277,
+        "priority": 1.6332256552861277,
+        "protected": true,
+        "redundancy": 0.31883156299591064,
+        "reason_codes": [
+          "PROTECTED_TYPE"
+        ],
+        "reason": "Retained because it is a protected constraint unit (locked from retention-target removal).",
+        "duplicate_of": null,
+        "duplicate_similarity": null
+      },
+      {
+        "node_id": "N07",
+        "index": 6,
+        "decision": "RETAIN",
+        "unit_type": "requirement",
+        "kind": "list_item",
+        "text": "Include the three biggest risk drivers.",
+        "importance": 0.7100809463529556,
+        "priority": 1.7100809463529556,
+        "protected": true,
+        "redundancy": 0.3338886797428131,
+        "reason_codes": [
+          "PROTECTED_TYPE"
+        ],
+        "reason": "Retained because it is a protected requirement unit (locked from retention-target removal).",
+        "duplicate_of": null,
+        "duplicate_similarity": null
+      },
+      {
+        "node_id": "N08",
+        "index": 7,
+        "decision": "REMOVE",
+        "unit_type": "example",
+        "kind": "sentence",
+        "text": "Example: \"Auto defaults rose 0.4 points, driven by used-car price declines.\"",
+        "importance": 0.3407163317600465,
+        "priority": 0.3407163317600465,
+        "protected": false,
+        "redundancy": 0.6126924753189087,
+        "reason_codes": [
+          "BELOW_RETENTION_TARGET"
+        ],
+        "reason": "Removed because its adjusted priority 0.279 (importance 0.341, redundancy 0.613) was among the lowest of the removable units and the retention target (7 of 9 units) required removing 2.",
+        "duplicate_of": null,
+        "duplicate_similarity": null
+      },
+      {
+        "node_id": "N09",
+        "index": 8,
+        "decision": "RETAIN",
+        "unit_type": "output_format",
+        "kind": "sentence",
+        "text": "Respond in bullet points followed by a one-line recommendation.",
+        "importance": 0.618386421634304,
+        "priority": 1.618386421634304,
+        "protected": true,
+        "redundancy": 0.3413020372390747,
+        "reason_codes": [
+          "PROTECTED_TYPE"
+        ],
+        "reason": "Retained because it is a protected output_format unit (locked from retention-target removal).",
+        "duplicate_of": null,
+        "duplicate_similarity": null
+      }
+    ],
+    "warnings": []
+  },
+  "evaluation": {
+    "original_tokens": 110,
+    "compressed_tokens": 74,
+    "token_reduction": 36,
+    "token_reduction_percent": 32.72727272727273,
+    "compression_ratio": 1.4864864864864864,
+    "original_nodes": 9,
+    "retained_nodes": 7,
+    "removed_nodes": 2,
+    "node_retention_percent": 77.77777777777779,
+    "requested_retention_ratio": 0.7,
+    "actual_retention_ratio": 0.7777777777777778,
+    "semantic_similarity": 0.8571987435076521,
+    "instruction_fidelity": 1.0,
+    "protected_total": 5,
+    "protected_retained": 5,
+    "protected_covered_by_duplicate": 0,
+    "protected_lost_ids": [],
+    "fidelity_by_type": {
+      "instruction": {
+        "total": 1,
+        "retained": 1,
+        "covered_by_duplicate": 0,
+        "lost": 0
+      },
+      "constraint": {
+        "total": 2,
+        "retained": 2,
+        "covered_by_duplicate": 0,
+        "lost": 0
+      },
+      "requirement": {
+        "total": 1,
+        "retained": 1,
+        "covered_by_duplicate": 0,
+        "lost": 0
+      },
+      "output_format": {
+        "total": 1,
+        "retained": 1,
+        "covered_by_duplicate": 0,
+        "lost": 0
+      }
+    },
+    "tokenizer": "cl100k_base (tiktoken)",
+    "tokenizer_exact": true,
+    "warnings": []
+  }
+}

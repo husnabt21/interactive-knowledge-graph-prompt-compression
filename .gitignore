@@ -13,3 +13,5 @@ env/
 .DS_Store
 
 *.log
+
+data/graph_preview.html
