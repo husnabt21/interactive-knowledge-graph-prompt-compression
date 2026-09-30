@@ -42,6 +42,65 @@ semantic similarity graph: an edge means two units have similar
 embeddings, not a factual or causal relationship. Importance combines type
 weight, graph connectivity and centrality.
 
+## Semantic Node Importance Index (SNII)
+
+SNII is this prototype's proposed, formalized importance index for prompt
+information units. It is **not** a second, independent scoring system — it
+is a documented, ranked wrapper around the importance score already
+computed by the Day 1 graph pipeline (`src/graph/importance.py`), exposed
+through `src/graph/snii.py`.
+
+### Formula
+
+SNII(n) = w_type · TypeWeight(n)
++ w_conn · Connectivity(n)
++ w_cent · Centrality(n)
++ w_prot · Protection(n)
+
+
+Default weights: `w_type=0.40, w_conn=0.25, w_cent=0.15, w_prot=0.20`
+(configurable via `ImportanceConfig`, validated to sum to 1.0).
+
+| Component | Range | Meaning |
+|---|---|---|
+| `TypeWeight(n)` | [0,1] | Fixed prior per unit type (e.g. instruction=1.00, constraint=0.90, other=0.20) |
+| `Connectivity(n)` | [0,1] | Node's weighted degree, normalized by the graph's maximum weighted degree |
+| `Centrality(n)` | [0,1] | Node's betweenness centrality, normalized by the graph's maximum betweenness |
+| `Protection(n)` | {0,1} | 1.0 if the unit type is in the protected set (constraint, requirement, output_format), else 0.0 |
+
+Since every component is normalized to `[0,1]` and the weights sum to 1.0,
+**SNII(n) is always in [0,1]** and the computation is fully deterministic —
+identical graph input always yields identical scores.
+
+### What SNII adds over raw importance
+- A deterministic **rank** (1 = highest) with ties broken by node ID.
+- A **percentage breakdown** per component, so it's visible *why* a node
+  scored the way it did (e.g. "55% of N02's score comes from its type
+  weight").
+- A **ranked table** and **per-node explanation** in the Streamlit UI.
+
+### Interpretation notes
+- SNII reflects a node's role *within the graph structure and Day 1
+  classification*, not the compressor's retain/remove decision. A
+  high-SNII node can still be removed (e.g. as a near-duplicate of an
+  even higher-priority node) — the SNII ranked table's "In compressed
+  prompt" column makes this distinction visible directly.
+- **SNII is the importance index proposed by this academic prototype. It
+  is not claimed to be a universally optimal measure of prompt-unit
+  importance** — it encodes a specific, documented set of design
+  assumptions (the type-weight priors and component weights above), which
+  are configurable but not learned or empirically validated against
+  downstream LLM behavior.
+
+### Demo
+```powershell
+python scripts/snii_demo.py
+python scripts/snii_demo.py --retention 0.5
+```
+Shows the full SNII ranking (unaffected by retention ratio, since it
+depends only on the graph) alongside which nodes actually survive
+compression at that setting.
+
 ## Day 2 — Quality-Aware Compression + Evaluation
 `protection_rules.py` assigns each unit type a protection level and a
 priority score. `compresser.py` removes redundant near-duplicate units

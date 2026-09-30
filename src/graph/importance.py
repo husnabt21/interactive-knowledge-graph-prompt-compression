@@ -24,6 +24,7 @@ import networkx as nx
 
 from src.extraction.unit_classifier import UNIT_TYPES
 
+
 DEFAULT_TYPE_WEIGHTS: dict[str, float] = {
     "instruction": 1.00,
     "constraint": 0.90,
@@ -181,6 +182,7 @@ def annotate_graph(graph: nx.Graph, result: ImportanceResult) -> nx.Graph:
             connectivity=rec.connectivity,
             centrality=rec.centrality,
             protection=rec.protection,
+            snii=rec.importance,  
         )
     return graph
 

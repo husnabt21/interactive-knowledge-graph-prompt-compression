@@ -283,6 +283,33 @@ def _render_details(
             st.markdown(f"- {_md_escape(bullet)}")
         st.caption("Reason from the compression engine: " + _md_escape(exp.reason))
 
+def _render_snii_table(a: AnalysisResult) -> None:
+    from src.graph.snii import compute_snii
+
+    st.subheader("Semantic Node Importance Index (SNII) — ranked")
+    st.caption(
+        "SNII formalizes the existing importance score as "
+        "w_type·TypeWeight + w_conn·Connectivity + w_cent·Centrality + w_prot·Protection "
+        "(all components in [0,1]; default weights 0.40/0.25/0.15/0.20). "
+        "It is the importance index proposed by this prototype, not a claim of universal optimality."
+    )
+
+    snii_result = compute_snii(a.importance)
+    retained_ids = set(a.compression.retained_node_ids)
+
+    rows = [
+        {
+            "Rank": s.rank,
+            "Node": s.node_id,
+            "Type": s.unit_type,
+            "SNII": round(s.snii, 4),
+            "In compressed prompt": "Yes" if s.node_id in retained_ids else "No",
+        }
+        for s in snii_result.ranked()
+    ]
+
+    st.dataframe(rows, width="stretch", hide_index=True)
+
 
 def _render_compression(a: AnalysisResult) -> None:
     c = a.compression
@@ -416,10 +443,11 @@ def main() -> None:
         return
 
     try:
-        explanations = explain_all(analysis.graph, analysis.compression)
+        explanations = explain_all(analysis.graph, analysis.compression, analysis.importance)
         _render_overview(analysis)
         visible = _render_graph(analysis, positions, (threshold, retention, protect, dedupe))
         _render_details(analysis, explanations, visible)
+        _render_snii_table(analysis)
         _render_compression(analysis)
         _render_evaluation(analysis)
         _render_exports(analysis)

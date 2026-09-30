@@ -20,6 +20,9 @@ import networkx as nx
 
 from src.compression.compresser import CompressionResult, Decision, NodeDecision
 
+from src.graph.snii import SNIIScore, compute_snii
+from src.graph.importance import ImportanceResult
+
 NA = "N/A"
 
 
@@ -57,6 +60,9 @@ class NodeExplanation:
     duplicate_similarity: Optional[float]
     represents: tuple[str, ...]            # removed near-duplicates this node stands for
     neighbors: tuple[tuple[str, float], ...]   # (node_id, similarity), strongest first
+    snii: float
+    snii_rank: int
+    snii_breakdown: tuple[str, ...]   # percentage-contribution lines; empty if not available
 
     def details_rows(self) -> list[tuple[str, str]]:
         """(label, value) pairs for the selected-node details panel."""
@@ -64,6 +70,7 @@ class NodeExplanation:
         return [
             ("Node ID", self.node_id),
             ("Type", self.unit_type),
+            ("SNII", f"{self.snii:.4f} (rank {self.snii_rank} of {self.total_nodes if hasattr(self, 'total_nodes') else '?'})"),
             ("Kind", self.kind or NA),
             ("Index", str(self.index)),
             ("Section", self.parent_heading or NA),
@@ -133,22 +140,21 @@ def status_label(decision: NodeDecision) -> str:
     return "Removed (near-duplicate)" if decision.duplicate_of is not None else "Removed"
 
 
-def explain_node(graph: nx.Graph, result: CompressionResult, node_id: str) -> NodeExplanation:
-    """Explain one node.
-
-    Raises:
-        TypeError: wrong argument types.
-        ExplanationError: graph and result do not match, or unknown node id.
-    """
+def explain_node(
+    graph: nx.Graph, result: CompressionResult, node_id: str,
+    importance: Optional[ImportanceResult] = None,
+) -> NodeExplanation:
     _validate(graph, result)
-    return _explain(graph, result, node_id, _importance_ranks(result))
+    return _explain(graph, result, node_id, _importance_ranks(result), importance)
 
 
-def explain_all(graph: nx.Graph, result: CompressionResult) -> dict[str, NodeExplanation]:
-    """Explain every node, keyed by node id, in original prompt order."""
+def explain_all(
+    graph: nx.Graph, result: CompressionResult,
+    importance: Optional[ImportanceResult] = None,
+) -> dict[str, NodeExplanation]:
     _validate(graph, result)
     ranks = _importance_ranks(result)
-    return {d.node_id: _explain(graph, result, d.node_id, ranks) for d in result.decisions}
+    return {d.node_id: _explain(graph, result, d.node_id, ranks, importance) for d in result.decisions}
 
 
 def search_nodes(result: CompressionResult, query: str) -> list[str]:
@@ -202,6 +208,7 @@ def _explain(
     result: CompressionResult,
     node_id: str,
     ranks: dict[str, int],
+    importance: Optional[ImportanceResult] = None,
 ) -> NodeExplanation:
     if node_id not in graph:
         raise ExplanationError(f"unknown node id {node_id!r}")
@@ -225,6 +232,20 @@ def _explain(
         )
     else:
         bullets.append(f"Degree {degree}")
+
+    snii_value = d.importance                # SNII == importance by construction
+    snii_rank_value = rank                    # same deterministic rank
+    snii_breakdown: tuple[str, ...] = ()
+    if importance is not None:
+        snii_result = compute_snii(importance)
+        if node_id in snii_result.scores:
+            score = snii_result[node_id]
+            snii_value = score.snii
+            snii_rank_value = score.rank
+            snii_breakdown = tuple(
+                f"{k}: {score.weighted_contributions[k]:.4f} ({score.percent_contributions[k]:.1f}%)"
+                for k in ("type", "connectivity", "centrality", "protection")
+            )
 
     retained = d.decision is Decision.RETAIN
     return NodeExplanation(
@@ -253,6 +274,9 @@ def _explain(
         duplicate_similarity=d.duplicate_similarity,
         represents=represents,
         neighbors=neighbors,
+        snii=snii_value,
+        snii_rank=snii_rank_value,
+        snii_breakdown=snii_breakdown,
     )
 
 
